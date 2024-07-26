@@ -1,5 +1,6 @@
 # (c) @TeleRoidGroup || @PredatorHackerzZ
 
+from config import BOT_OWNER
 import os
 import asyncio
 import traceback

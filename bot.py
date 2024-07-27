@@ -1,6 +1,5 @@
 # (c) @TeleRoidGroup || @PredatorHackerzZ
 
-from configs import BOT_OWNER
 import os
 import asyncio
 import traceback
@@ -38,6 +37,7 @@ from handlers.save_media import (
     save_media_in_channel,
     save_batch_media_in_channel
 )
+from configs import BOT_OWNER
 
 MediaList = {}
 
@@ -129,16 +129,18 @@ async def main(bot: Client, message: Message):
                                      disable_web_page_preview=True)
             return
 
-        if filters.user(BOT_OWNER):
-            await message.reply_text(
-                text="**Choose an option from below:**",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("Save in Batch", callback_data="addToBatchTrue")],
-                    [InlineKeyboardButton("Get Sharable Link", callback_data="addToBatchFalse")]
-                ]),
-                quote=True,
-                disable_web_page_preview=True
-            )
+        if Config.OTHER_USERS_CAN_SAVE_FILE is False and message.chat.id not in BOT_OWNER:
+            return
+
+        await message.reply_text(
+            text="**Choose an option from below:**",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("Save in Batch", callback_data="addToBatchTrue")],
+                [InlineKeyboardButton("Get Sharable Link", callback_data="addToBatchFalse")]
+            ]),
+            quote=True,
+            disable_web_page_preview=True
+        )
     elif message.chat.type == enums.ChatType.CHANNEL:
         if (message.chat.id == int(Config.LOG_CHANNEL)) or (message.chat.id == int(Config.UPDATES_CHANNEL)) or message.forward_from_chat or message.forward_from:
             return

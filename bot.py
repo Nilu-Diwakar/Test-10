@@ -37,7 +37,7 @@ from handlers.save_media import (
     save_media_in_channel,
     save_batch_media_in_channel
 )
-# from configs import BOT_OWNER
+from configs import ADMINS
 
 MediaList = {}
 
@@ -129,7 +129,7 @@ async def main(bot: Client, message: Message):
                                      disable_web_page_preview=True)
             return
 
-        if Config.OTHER_USERS_CAN_SAVE_FILE is False and message.chat.id not in Config.BOT_OWNER:
+        if Config.OTHER_USERS_CAN_SAVE_FILE is False and message.chat.id not in ADMINS:
             return
 
         await message.reply_text(

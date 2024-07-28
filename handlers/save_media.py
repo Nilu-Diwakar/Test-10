@@ -61,7 +61,8 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             await asyncio.sleep(2)
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
-            text=message_ids_str,
+            text=f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code> \n\n" message_ids_str,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[
                 InlineKeyboardButton("Delete Batch", callback_data="closeMessage")
@@ -111,7 +112,9 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
         forwarded_msg = await message.forward(Config.DB_CHANNEL)
         file_er_id = str(forwarded_msg.id)
         await forwarded_msg.reply_text(
-            f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link!",
+            f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link! \n\n"
+            f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True)
         share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
         short_link = get_short(share_link)

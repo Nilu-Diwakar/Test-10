@@ -27,7 +27,7 @@ def get_short(url):
         return url
 
     
-async def copy_to_channel(bot: Client, message: Message, editable: Message):
+async def forward_to_channel(bot: Client, message: Message, editable: Message):
     try:
         __SENT = await message.forward(Config.DB_CHANNEL)
         return __SENT
@@ -61,7 +61,7 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             await asyncio.sleep(2)
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
-            text=f"**Original Link** = <code>{short_link}</code> \n\n"
+            text=f"**Original Link** = <code>{short_link}</code> \n\n",
             f"**Short Link** = <code>{share_link}</code> \n\n" message_ids_str,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[

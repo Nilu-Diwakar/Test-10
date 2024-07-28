@@ -27,7 +27,7 @@ def get_short(url):
         return url
 
     
-async def forward_to_channel(bot: Client, message: Message, editable: Message):
+async def copy_to_channel(bot: Client, message: Message, editable: Message):
     try:
         __SENT = await message.forward(Config.DB_CHANNEL)
         return __SENT
@@ -57,17 +57,19 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             sent_message = await forward_to_channel(bot, message, editable)
             if sent_message is None:
                 continue
-            message_ids_str += f"{str(sent_message.id)} "
+            message_ids_str += f"{str(sent_message.id)}"
             await asyncio.sleep(2)
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
-            text=message_ids_str,
+            text=message_ids_str 
+            f"\n\n**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[
                 InlineKeyboardButton("Delete Batch", callback_data="closeMessage")
             ]])
         )
-        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=NILESH_Bro_{str_to_b64(str(SaveMessage.id))}"
+        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
         short_link = get_short(share_link)
         await editable.edit(
             f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: \n"
@@ -113,7 +115,7 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
         await forwarded_msg.reply_text(
             f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link!",
             disable_web_page_preview=True)
-        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=NILESH_Bro_{str_to_b64(file_er_id)}"
+        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
         short_link = get_short(share_link)
         await editable.edit(
             "**Your File Stored in my Database!**\n\n"

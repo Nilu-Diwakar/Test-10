@@ -61,8 +61,8 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             await asyncio.sleep(2)
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
-            text=message_ids_str,
-            text=f"\n\n**Original Link** = <code>{short_link}</code> \n\n"
+            text=message_ids_str
+            f"\n\n**Original Link** = <code>{short_link}</code> \n\n"
             f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[

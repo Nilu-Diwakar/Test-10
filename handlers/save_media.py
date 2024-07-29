@@ -134,13 +134,16 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
             await bot.send_message(
                 chat_id=int(Config.LOG_CHANNEL),
                 text="#FloodWait:\n"
-                     f"Got FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` !!",
+                     f"Got FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id})!!",
                 disable_web_page_preview=True,
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                    ]
-                )
+                
+    #============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+                
+                # reply_markup=InlineKeyboardMarkup(
+                #     [
+                #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+                #     ]
+                # )
             )
         await save_media_in_channel(bot, editable, message)
     except Exception as err:
@@ -148,12 +151,15 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
             text="#ERROR_TRACEBACK:\n"
-                 f"Got Error from `{str(editable.chat.id)}` !!\n\n"
+                 f"Got Error from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id})!!\n\n"
                  f"**Traceback:** `{err}`",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                ]
-            )
+            
+#============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+            
+            # reply_markup=InlineKeyboardMarkup(
+            #     [
+            #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+            #     ]
+            # )
         )

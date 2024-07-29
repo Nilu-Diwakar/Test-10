@@ -65,7 +65,7 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
 
         # ====================================================================
         await SaveMessage.reply_text(
-             f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link! \n\n**Original Link** = <code>{short_link}</code> \n\n**Short Link** = <code>{share_link}</code>",
+             f"#BATCH_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got BATCH Link! \n\n**Original Link** = <code>{share_link}</code> \n\n**Short Link** = <code>{short_link}</code>",
             disable_web_page_preview=True)
         # ====================================================================
         
@@ -83,21 +83,25 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
             text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
-            f"**Original Link** = <code>{short_link}</code> \n\n"
-            f"**Short Link** = <code>{share_link}</code>",
+            f"**Original Link** = <code>{share_link}</code> \n\n"
+            f"**Short Link** = <code>{short_link}</code>",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
-                                                InlineKeyboardButton("Short Link", url=share_link)]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=share_link),
+                                                InlineKeyboardButton("Short Link", url=short_link)]])
         )
-        await bot.send_message(
-            chat_id=int(Config.DB_CHANNEL),
-            text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
-            f"**Original Link** = <code>{short_link}</code> \n\n"
-            f"**Short Link** = <code>{share_link}</code>",
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
-                                                InlineKeyboardButton("Short Link", url=share_link)]])
-        )
+        
+        # =========================
+        # await bot.send_message(
+        #     chat_id=int(Config.DB_CHANNEL),
+        #     text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
+        #     f"**Original Link** = <code>{short_link}</code> \n\n"
+        #     f"**Short Link** = <code>{share_link}</code>",
+        #     disable_web_page_preview=True,
+        #     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
+        #                                         InlineKeyboardButton("Short Link", url=share_link)]])
+        # )
+        # =========================
+
     except Exception as err:
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")
         await bot.send_message(

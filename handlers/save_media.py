@@ -53,7 +53,6 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
-        # message_ids_str2 = ""
         for message in (await bot.get_messages(chat_id=editable.chat.id, message_ids=message_ids)):
             sent_message = await forward_to_channel(bot, message, editable)
             if sent_message is None:
@@ -70,21 +69,6 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         )
         share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
         short_link = get_short(share_link)
-
-        # ========edited==========
-        message_ids_str2 +=f"Original Link = <code>{share_link}</code> \n\n"
-        # message_ids_str2 +=f"Short Link = <code>{short_link}</code>",
-        
-        SaveMessage2 = await bot.send_message(
-            chat_id=Config.DB_CHANNEL,
-            text=message_ids_str2,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([[
-                InlineKeyboardButton("Delete Batch", callback_data="closeMessage")
-            ]])
-        )
-        # ========edited==========
-        
         await editable.edit(
             f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: \n"
             f"<code>{short_link}</code> \n\n"

@@ -24,7 +24,7 @@ def get_short(url):
     else:
         return url
     
-async def copy_to_channel(bot: Client, message: Message, editable: Message):
+async def forward_to_channel(bot: Client, message: Message, editable: Message):
     try:
         __SENT = await message.forward(Config.DB_CHANNEL)
         return __SENT
@@ -42,12 +42,12 @@ async def copy_to_channel(bot: Client, message: Message, editable: Message):
                 #     ]
                 # )
             )
-        return await copy_to_channel(bot, message, editable)
+        return await forward_to_channel(bot, message, editable)
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
         for message in (await bot.get_messages(chat_id=editable.chat.id, message_ids=message_ids)):
-            sent_message = await copy_to_channel(bot, message, editable)
+            sent_message = await forward_to_channel(bot, message, editable)
             if sent_message is None:
                 continue
             message_ids_str += f"{str(sent_message.id)} "

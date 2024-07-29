@@ -82,6 +82,15 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
                                                 InlineKeyboardButton("Short Link", url=share_link)]])
         )
+        await bot.send_message(
+            chat_id=int(Config.DB_CHANNEL),
+            text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
+            f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
+                                                InlineKeyboardButton("Short Link", url=share_link)]])
+        )
     except Exception as err:
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")
         await bot.send_message(

@@ -71,7 +71,7 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         short_link = get_short(share_link)
 
         # ========edited==========
-        message_ids_str +=f"{str(**Original Link** = <code>{share_link}</code> \n\n)}"
+        message_ids_str +=f"{str(Original Link = <code>{share_link}</code> \n\n)}"
         # message_ids_str +=f"{**Short Link** = <code>{short_link}</code>}"
         # message_ids_str +=f"str(nilu)",
         

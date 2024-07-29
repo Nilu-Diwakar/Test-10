@@ -53,7 +53,7 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
-        message_ids_str2 = ""
+        # message_ids_str2 = ""
         for message in (await bot.get_messages(chat_id=editable.chat.id, message_ids=message_ids)):
             sent_message = await forward_to_channel(bot, message, editable)
             if sent_message is None:
@@ -72,11 +72,10 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         short_link = get_short(share_link)
 
         # ========edited==========
-        message_ids_str +="Original Link = <code>{share_link}</code> \n\n"
-        # message_ids_str2 +=f"{**Short Link** = <code>{short_link}</code>}"
-        # message_ids_str2 +=f"str(nilu)",
+        message_ids_str2 +=f"Original Link = <code>{share_link}</code> \n\n"
+        # message_ids_str2 +=f"Short Link = <code>{short_link}</code>",
         
-        SaveMessage = await bot.send_message(
+        SaveMessage2 = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
             text=message_ids_str2,
             disable_web_page_preview=True,

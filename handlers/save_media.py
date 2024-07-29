@@ -11,13 +11,11 @@ from pyrogram.types import (
 )
 from pyrogram.errors import FloodWait
 from handlers.helpers import str_to_b64
-
 def generate_random_alphanumeric():
     """Generate a random 8-letter alphanumeric string."""
     characters = string.ascii_letters + string.digits
     random_chars = ''.join(random.choice(characters) for _ in range(8))
     return random_chars
-
 def get_short(url):
     rget = requests.get(f"https://{Config.SHORTLINK_URL}/api?api={Config.SHORTLINK_API}&url={url}&alias={generate_random_alphanumeric()}")
     rjson = rget.json()
@@ -25,7 +23,6 @@ def get_short(url):
         return rjson["shortenedUrl"]
     else:
         return url
-
     
 async def forward_to_channel(bot: Client, message: Message, editable: Message):
     try:
@@ -38,9 +35,7 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
                 chat_id=int(Config.LOG_CHANNEL),
                 text=f"#FloodWait:\nGot FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!",
                 disable_web_page_preview=True,
-
 # ============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
-
                 # reply_markup=InlineKeyboardMarkup(
                 #     [
                 #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
@@ -48,8 +43,6 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
                 # )
             )
         return await forward_to_channel(bot, message, editable)
-
-
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
@@ -83,11 +76,11 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
             text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
-            f"**Original Link** = <code>{share_link}</code> \n\n"
-            f"**Short Link** = <code>{short_link}</code>",
+            f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=share_link),
-                                                InlineKeyboardButton("Short Link", url=short_link)]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
+                                                InlineKeyboardButton("Short Link", url=share_link)]])
         )
     except Exception as err:
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")
@@ -95,7 +88,6 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             chat_id=int(Config.LOG_CHANNEL),
             text=f"#ERROR_TRACEBACK:\nGot Error from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!\n\n**Traceback:** `{err}`",
             disable_web_page_preview=True,
-
 #============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
             
             # reply_markup=InlineKeyboardMarkup(
@@ -104,8 +96,6 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
             #     ]
             # )
         )
-
-
 async def save_media_in_channel(bot: Client, editable: Message, message: Message):
     try:
         forwarded_msg = await message.forward(Config.DB_CHANNEL)

@@ -36,13 +36,16 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
             await asyncio.sleep(sl.value)
             await bot.send_message(
                 chat_id=int(Config.LOG_CHANNEL),
-                text=f"#FloodWait:\nGot FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` !!",
+                text=f"#FloodWait:\nGot FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!",
                 disable_web_page_preview=True,
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                    ]
-                )
+
+# ============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+
+                # reply_markup=InlineKeyboardMarkup(
+                #     [
+                #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+                #     ]
+                # )
             )
         return await forward_to_channel(bot, message, editable)
 
@@ -67,7 +70,9 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
         short_link = get_short(share_link)
         await editable.edit(
-            f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: <code>{short_link}</code> \n\n"
+            f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: \n"
+            f"<code>{short_link}</code> \n\n"
+            f"<code>{share_link}</code> \n\n"
             f"Just Click the link to get your files!",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("Original Link", url=share_link),
@@ -77,7 +82,9 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         )
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
-            text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link!",
+            text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
+            f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
                                                 InlineKeyboardButton("Short Link", url=share_link)]])
@@ -86,13 +93,16 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
-            text=f"#ERROR_TRACEBACK:\nGot Error from `{str(editable.chat.id)}` !!\n\n**Traceback:** `{err}`",
+            text=f"#ERROR_TRACEBACK:\nGot Error from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!\n\n**Traceback:** `{err}`",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                ]
-            )
+
+#============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+            
+            # reply_markup=InlineKeyboardMarkup(
+            #     [
+            #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+            #     ]
+            # )
         )
 
 
@@ -101,13 +111,17 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
         forwarded_msg = await message.forward(Config.DB_CHANNEL)
         file_er_id = str(forwarded_msg.id)
         await forwarded_msg.reply_text(
-            f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link!",
+            f"#PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link! \n\n"
+            f"**Original Link** = <code>{short_link}</code> \n\n"
+            f"**Short Link** = <code>{share_link}</code>",
             disable_web_page_preview=True)
         share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
         short_link = get_short(share_link)
         await editable.edit(
             "**Your File Stored in my Database!**\n\n"
-            f"Here is the Permanent Link of your file: <code>{short_link}</code> \n\n"
+            f"Here is the Permanent Link of your file: \n"
+            f"<code>{short_link}</code> \n\n"
+            f"<code>{share_link}</code> \n\n"
             "Just Click the link to get your file!",
             reply_markup=InlineKeyboardMarkup(
                [[InlineKeyboardButton("Original Link", url=share_link),
@@ -122,13 +136,16 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
             await bot.send_message(
                 chat_id=int(Config.LOG_CHANNEL),
                 text="#FloodWait:\n"
-                     f"Got FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` !!",
+                     f"Got FloodWait of `{str(sl.value)}s` from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!",
                 disable_web_page_preview=True,
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                    ]
-                )
+
+    #============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+                
+                # reply_markup=InlineKeyboardMarkup(
+                #     [
+                #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+                #     ]
+                # )
             )
         await save_media_in_channel(bot, editable, message)
     except Exception as err:
@@ -136,12 +153,15 @@ async def save_media_in_channel(bot: Client, editable: Message, message: Message
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
             text="#ERROR_TRACEBACK:\n"
-                 f"Got Error from `{str(editable.chat.id)}` !!\n\n"
+                 f"Got Error from `{str(editable.chat.id)}` [{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) !!\n\n"
                  f"**Traceback:** `{err}`",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
-                ]
-            )
+
+#============= TO PREVENT OWNER FROM GETTING BANNED, AS CURRENTLY ONLY OWNER CAN CREATE LINKS============
+            
+            # reply_markup=InlineKeyboardMarkup(
+            #     [
+            #         [InlineKeyboardButton("Ban User", callback_data=f"ban_user_{str(editable.chat.id)}")]
+            #     ]
+            # )
         )

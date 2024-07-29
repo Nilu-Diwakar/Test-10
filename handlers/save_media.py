@@ -108,20 +108,13 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
 
 async def save_media_in_channel(bot: Client, editable: Message, message: Message):
     try:
-        # BEFORE IT WAS AT BELOW COMENTED PLACE
-        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
-        short_link = get_short(share_link)
-        
         forwarded_msg = await message.forward(Config.DB_CHANNEL)
         file_er_id = str(forwarded_msg.id)
         await forwarded_msg.reply_text(
-            f"**Original Link** = <code>{short_link}</code> \n\n **Short Link** = <code>{share_link}</code> \n\n #PRIVATE_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got File Link!",
+            f"**Original Link** = <code>{short_link}</code> \n\n**Short Link** = <code>{share_link}</code> ",
             disable_web_page_preview=True)
-        
-        # IT IS WRITTEN ABOVE OUTSIDE THE "await forwarded_msg.reply_text()"
-        # share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
-        # short_link = get_short(share_link)
-        
+        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(file_er_id)}"
+        short_link = get_short(share_link)
         await editable.edit(
             "**Your File Stored in my Database!**\n\n"
             f"Here is the Permanent Link of your file: \n"

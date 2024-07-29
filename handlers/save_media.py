@@ -24,7 +24,7 @@ def get_short(url):
     else:
         return url
     
-async def forward_to_channel(bot: Client, message: Message, editable: Message):
+async def copy_to_channel(bot: Client, message: Message, editable: Message):
     try:
         __SENT = await message.forward(Config.DB_CHANNEL)
         return __SENT
@@ -42,12 +42,12 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
                 #     ]
                 # )
             )
-        return await forward_to_channel(bot, message, editable)
+        return await copy_to_channel(bot, message, editable)
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
         for message in (await bot.get_messages(chat_id=editable.chat.id, message_ids=message_ids)):
-            sent_message = await forward_to_channel(bot, message, editable)
+            sent_message = await copy_to_channel(bot, message, editable)
             if sent_message is None:
                 continue
             message_ids_str += f"{str(sent_message.id)} "
@@ -62,12 +62,9 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         )
         share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
         short_link = get_short(share_link)
-
-        # ====================================================================
         await SaveMessage.reply_text(
              f"#BATCH_FILE:\n\n[{message.from_user.first_name}](tg://user?id={message.from_user.id}) Got BATCH Link! \n\n**Original Link** = <code>{share_link}</code> \n\n**Short Link** = <code>{short_link}</code>",
             disable_web_page_preview=True)
-        # ====================================================================
         
         await editable.edit(
             f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: \n"
@@ -90,18 +87,6 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
                                                 InlineKeyboardButton("Short Link", url=short_link)]])
         )
         
-        # =========================
-        # await bot.send_message(
-        #     chat_id=int(Config.DB_CHANNEL),
-        #     text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
-        #     f"**Original Link** = <code>{short_link}</code> \n\n"
-        #     f"**Short Link** = <code>{share_link}</code>",
-        #     disable_web_page_preview=True,
-        #     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
-        #                                         InlineKeyboardButton("Short Link", url=share_link)]])
-        # )
-        # =========================
-
     except Exception as err:
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")
         await bot.send_message(

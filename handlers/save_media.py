@@ -59,6 +59,20 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
                 continue
             message_ids_str += f"{str(sent_message.id)} "
             await asyncio.sleep(2)
+        # SaveMessage = await bot.send_message(
+        #     chat_id=Config.DB_CHANNEL,
+        #     text=message_ids_str,
+        #     disable_web_page_preview=True,
+        #     reply_markup=InlineKeyboardMarkup([[
+        #         InlineKeyboardButton("Delete Batch", callback_data="closeMessage")
+        #     ]])
+        # )
+        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
+        short_link = get_short(share_link)
+
+        # ========edited==========
+        message_ids_str +=f"**Original Link** = <code>{share_link}</code> \n\n"
+        message_ids_str +=f"**Short Link** = <code>{short_link}</code>",
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
             text=message_ids_str,
@@ -67,8 +81,8 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
                 InlineKeyboardButton("Delete Batch", callback_data="closeMessage")
             ]])
         )
-        share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=VJBotz_{str_to_b64(str(SaveMessage.id))}"
-        short_link = get_short(share_link)
+        # ========edited==========
+        
         await editable.edit(
             f"**Batch Files Stored in my Database!**\n\nHere is the Permanent Link of your files: \n"
             f"<code>{short_link}</code> \n\n"
@@ -83,11 +97,11 @@ async def save_batch_media_in_channel(bot: Client, editable: Message, message_id
         await bot.send_message(
             chat_id=int(Config.LOG_CHANNEL),
             text=f"#BATCH_SAVE:\n\n[{editable.reply_to_message.from_user.first_name}](tg://user?id={editable.reply_to_message.from_user.id}) Got Batch Link! \n\n"
-            f"**Original Link** = <code>{short_link}</code> \n\n"
-            f"**Short Link** = <code>{share_link}</code>",
+            f"**Original Link** = <code>{share_link}</code> \n\n"
+            f"**Short Link** = <code>{short_link}</code>",
             disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=short_link),
-                                                InlineKeyboardButton("Short Link", url=share_link)]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Original Link", url=share_link),
+                                                InlineKeyboardButton("Short Link", url=short_link)]])
         )
     except Exception as err:
         await editable.edit(f"Something Went Wrong!\n\n**Error:** `{err}`")

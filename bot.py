@@ -104,8 +104,8 @@ async def start(bot: Client, cmd: Message):
                     quote=True,
                     disable_web_page_preview=True
                 )
-                await asyncio.sleep(30)
-                await _response_msg.delete()
+                # await asyncio.sleep(30)
+                # await _response_msg.delete()
             
             else:
                 message_ids.append(int(GetMessage.id))

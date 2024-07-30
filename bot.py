@@ -90,6 +90,8 @@ async def start(bot: Client, cmd: Message):
             )
         )
     else:
+        # ============================
+        Nilesh = []
         try:
             try:
                 file_id = int(b64_to_str(usr_cmd).split("_")[-1])
@@ -110,11 +112,11 @@ async def start(bot: Client, cmd: Message):
             else:
                 message_ids.append(int(GetMessage.id))
 
-            # ============================
-            Nilesh = []
             for i in range(len(message_ids)):
                 await send_media_and_reply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
                 Nilesh.append(message_ids[i])
+        except Exception as err:
+            await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 # =======================
         await asyncio.sleep(20)
         for data in Nilesh:
@@ -123,8 +125,6 @@ async def start(bot: Client, cmd: Message):
             except:
                 pass
         # ========================
-        except Exception as err:
-            await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
 
 @Bot.on_message((filters.document | filters.video | filters.audio | filters.photo) & ~filters.chat(Config.DB_CHANNEL))

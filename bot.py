@@ -109,8 +109,20 @@ async def start(bot: Client, cmd: Message):
             
             else:
                 message_ids.append(int(GetMessage.id))
+
+            # ============================
+            Nilesh = []
             for i in range(len(message_ids)):
                 await send_media_and_reply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+                Nilesh.append(message_ids[i])
+# =======================
+        await asyncio.sleep(20)
+        for data in Nilesh:
+            try:
+                await data.delete()
+            except:
+                pass
+        # ========================
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 

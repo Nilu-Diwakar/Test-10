@@ -15,8 +15,8 @@ async def reply_forward(message: Message, file_id: int):
             disable_web_page_preview=True,
             quote=True
         )
-        # await asyncio.sleep(30)
-        # await k.delete()
+        ## DELETE AFTER 30 MIN
+        asyncio.create_task(delete_after_delay(k, 1800))
     
     except FloodWait as e:
         await asyncio.sleep(e.x)
@@ -38,10 +38,8 @@ async def media_forward(bot: Client, user_id: int, file_id: int):
 async def send_media_and_reply(bot: Client, user_id: int, file_id: int):
     sent_message = await media_forward(bot, user_id, file_id)
     await reply_forward(message=sent_message, file_id=file_id)
-    
-    # await asyncio.sleep(30)
-    # await sent_message.delete()
-    asyncio.create_task(delete_after_delay(sent_message, 30))
+    ## DELETE AFTER 30 MIN
+    asyncio.create_task(delete_after_delay(sent_message, 1800))
 
 async def delete_after_delay(message, delay):
     await asyncio.sleep(delay)

@@ -16,7 +16,7 @@ async def reply_forward(message: Message, file_id: int):
             quote=True
         )
         ## DELETE AFTER 30 MIN
-        asyncio.create_task(delete_after_delay(k, 1800))
+        # asyncio.create_task(delete_after_delay(k, 1800))
     
     except FloodWait as e:
         await asyncio.sleep(e.x)
